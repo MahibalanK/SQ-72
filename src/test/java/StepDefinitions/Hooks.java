@@ -7,17 +7,14 @@ import io.appium.java_client.MobileElement;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.*;
 
 import java.net.MalformedURLException;
 
 public class Hooks {
 
     TestContext testContext;
-    AppiumDriver<MobileElement> webDriver;
+    AppiumDriver<WebElement> webDriver;
 
     public Hooks(TestContext context) {
         testContext = context;
@@ -28,8 +25,11 @@ public class Hooks {
     @Before
     public void setUp() throws MalformedURLException {
         webDriver = testContext.getDriverManager().getDriver();
-        webDriver.get(FileReaderManager.getInstance().getConfigFileReader().getUrl());
-        System.out.println("Launched url");
+        if(FileReaderManager.getInstance().getConfigFileReader().getAppPackage().equalsIgnoreCase("nc")){
+            webDriver.get(FileReaderManager.getInstance().getConfigFileReader().getUrl());
+
+        }
+         System.out.println("Launched url");
     }
 
 

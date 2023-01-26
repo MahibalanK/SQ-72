@@ -9,7 +9,7 @@ import org.testng.annotations.DataProvider;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "StepDefinitions",
-        tags = "@AddProductToCart",
+        tags = "@AddTwoNumbersInCalc",
         dryRun = false,
         plugin = {
                 "pretty",

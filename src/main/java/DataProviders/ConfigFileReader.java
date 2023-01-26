@@ -120,4 +120,15 @@ public class ConfigFileReader {
     public String getAPKPath(){
         return properties.getProperty("ApkPath");
     }
+
+
+    public String getAppPackage(){
+        return properties.getProperty("appPackage");
+    }
+    public String getAppActivity(){
+        return properties.getProperty("appActivity");
+    }
+
+
+
 }

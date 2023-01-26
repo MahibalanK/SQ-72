@@ -11,6 +11,7 @@ import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
@@ -26,13 +27,16 @@ import java.util.concurrent.TimeUnit;
 public class AllDriverManager {
 
    // Class To Initiate APPIUM Driver for Mobile TEST
-   private static AppiumDriver<MobileElement> webDriver;
+   private static AppiumDriver<WebElement> webDriver;
     private static DriverType browserType;
     private static EnvironmentType environmentType;
     private static Platform devicePlatform;
     private static String deviceName;
     private static String oSVersion;
     private static String apkAppPath;
+
+    private static String appPackage;
+    private static String appActivity;
 
 
     public AllDriverManager() {
@@ -42,19 +46,30 @@ public class AllDriverManager {
         browserType = FileReaderManager.getInstance().getConfigFileReader().getBrowser();
         environmentType = FileReaderManager.getInstance().getConfigFileReader().getEnvironment();
         apkAppPath = FileReaderManager.getInstance().getConfigFileReader().getAPKPath();
+        appPackage = FileReaderManager.getInstance().getConfigFileReader().getAppPackage();
+        appActivity = FileReaderManager.getInstance().getConfigFileReader().getAppActivity();
+
     }
 
 
     /*Driver setup for LOCAL execution*/
-    private AppiumDriver<MobileElement> createLocalDriver() throws MalformedURLException {
+    private AppiumDriver<WebElement> createLocalDriver() throws MalformedURLException {
         DesiredCapabilities cap = new DesiredCapabilities();
         switch (devicePlatform) {
             case ANDROID:
                 cap.setCapability(MobileCapabilityType.PLATFORM_VERSION, oSVersion);
                 cap.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
                 cap.setCapability(MobileCapabilityType.PLATFORM_NAME, devicePlatform);
-                cap.setCapability(MobileCapabilityType.BROWSER_NAME, browserType);
-                cap.setCapability(MobileCapabilityType.APP,apkAppPath);
+                if(appPackage.equalsIgnoreCase("nc")){
+                    cap.setCapability(MobileCapabilityType.BROWSER_NAME, browserType);
+                    cap.setCapability(MobileCapabilityType.APP,apkAppPath);
+
+                }
+                else{
+                    cap.setCapability("appPackage", appPackage);
+                    cap.setCapability("appActivity", appActivity);
+                }
+
                 webDriver = new AndroidDriver(new URL("http://0.0.0.0:4723/wd/hub"), cap);
                 System.out.println("android driver set up done");
                 break;
@@ -64,26 +79,26 @@ public class AllDriverManager {
                 cap.setCapability(MobileCapabilityType.PLATFORM_NAME, devicePlatform);
                 cap.setCapability(MobileCapabilityType.BROWSER_NAME, browserType);
                 cap.setCapability(MobileCapabilityType.APP,apkAppPath);
-                webDriver = new IOSDriver<MobileElement>(new URL("http://0.0.0.0:4723/wd/hub"), cap);
+                webDriver = new IOSDriver<WebElement>(new URL("http://0.0.0.0:4723/wd/hub"), cap);
                 break;
 
         }
         long time = FileReaderManager.getInstance().getConfigFileReader().getTime();
 
         webDriver.manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().pageLoadTimeout(time, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().setScriptTimeout(time, TimeUnit.SECONDS);
+        //webDriver.manage().timeouts().pageLoadTimeout(time, TimeUnit.SECONDS);
+        //webDriver.manage().timeouts().setScriptTimeout(time, TimeUnit.SECONDS);
         return webDriver;
     }
 
 
 /*Driver setup for CLOUD execution*/
-    private AppiumDriver<MobileElement> createRemoteDriver() {
+    private AppiumDriver<WebElement> createRemoteDriver() {
         throw new RuntimeException("Remote web driver is not yet implemented");
     }
 
     /*Parent function to set driver depends on Environment Type -local or remote*/
-    private AppiumDriver<MobileElement> createDriver() throws MalformedURLException {
+    private AppiumDriver<WebElement> createDriver() throws MalformedURLException {
         switch (environmentType) {
             case LOCAL:
                 webDriver = createLocalDriver();
@@ -96,7 +111,7 @@ public class AllDriverManager {
     }
 
     /*Getter method */
-    public AppiumDriver<MobileElement> getDriver() throws MalformedURLException {
+    public AppiumDriver<WebElement> getDriver() throws MalformedURLException {
         if (webDriver == null) webDriver = createDriver();
         return webDriver;
     }

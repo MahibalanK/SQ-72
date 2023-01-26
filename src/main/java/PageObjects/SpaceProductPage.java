@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class SpaceProductPage {
 
-    private final AppiumDriver<MobileElement> webDriver;
+    private final AppiumDriver<WebElement> webDriver;
 
     //Constructor to initialize page elements
     public SpaceProductPage(AppiumDriver webDriver) {
