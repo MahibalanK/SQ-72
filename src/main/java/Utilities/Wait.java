@@ -21,14 +21,14 @@ public class Wait {
             System.out.println(e.getMessage());
         }
     }
-    public static void untilAjaxCallIsDone(AppiumDriver webDriver, Long timeOutInSeconds) {
+    public static void untilAjaxCallIsDone(WebDriver webDriver, Long timeOutInSeconds) {
         until(webDriver, timeOutInSeconds, (function) -> {
             Boolean isJqueryCallDone = (Boolean) ((JavascriptExecutor) webDriver).executeScript("return jQuery.active==0");
             if (!isJqueryCallDone) System.out.println("jQuery call is in progress");
             return isJqueryCallDone;
         });
     }
-    public static void untilPageReadyState(AppiumDriver webDriver, Long timeOutInSeconds) {
+    public static void untilPageReadyState(WebDriver webDriver, Long timeOutInSeconds) {
         until(webDriver, timeOutInSeconds, (function) -> {
             String isPageLoaded = String.valueOf(((JavascriptExecutor) webDriver).executeScript("return document.readyState"));
             if (isPageLoaded.equals("complete")) {
@@ -40,7 +40,7 @@ public class Wait {
         });
     }
 
-    public static void untilElementIsVisible(AppiumDriver webDriver, WebElement webElement, Long timeOutInSeconds) {
+    public static void untilElementIsVisible(WebDriver webDriver, WebElement webElement, Long timeOutInSeconds) {
         new WebDriverWait(webDriver, timeOutInSeconds).until(ExpectedConditions.visibilityOf(webElement));
     }
     public static void untilListElementIsVisible(WebDriver webDriver, List<WebElement> webElements, Long timeOutInSeconds) {

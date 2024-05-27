@@ -9,7 +9,7 @@ import org.testng.annotations.DataProvider;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "StepDefinitions",
-        tags = "@AddTwoNumbersInCalc",
+        tags = "@starwars",
         dryRun = false,
         plugin = {
                 "pretty",

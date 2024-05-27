@@ -2,8 +2,6 @@ package StepDefinitions;
 
 import Managers.FileReaderManager;
 import Utilities.TestContext;
-import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
@@ -14,7 +12,7 @@ import java.net.MalformedURLException;
 public class Hooks {
 
     TestContext testContext;
-    AppiumDriver<WebElement> webDriver;
+    WebDriver webDriver;
 
     public Hooks(TestContext context) {
         testContext = context;

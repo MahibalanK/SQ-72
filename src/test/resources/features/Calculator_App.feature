@@ -10,4 +10,4 @@ Feature: Add any two numbers in Android Native Calculator application
 
     Examples:
       | number1 | number2     |  result |
-      | 3       |   4          |     7     |
+      | 3       |   4         |     7   |

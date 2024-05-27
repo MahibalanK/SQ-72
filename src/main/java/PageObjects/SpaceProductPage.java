@@ -3,6 +3,7 @@ package PageObjects;
 import Utilities.Wait;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
@@ -14,10 +15,10 @@ import java.util.Map;
 
 public class SpaceProductPage {
 
-    private final AppiumDriver<WebElement> webDriver;
+    private final WebDriver webDriver;
 
     //Constructor to initialize page elements
-    public SpaceProductPage(AppiumDriver webDriver) {
+    public SpaceProductPage(WebDriver webDriver) {
         this.webDriver = webDriver;
         PageFactory.initElements(webDriver, this);
     }
@@ -49,7 +50,7 @@ public class SpaceProductPage {
     /*PAGE ACTIONS
     verify the landing page Image displayed or not*/
     public boolean verifyLandingPageText(){
-        Wait.untilElementIsVisible((AppiumDriver) this.webDriver,lblShopSpaceX, 30L);
+        Wait.untilElementIsVisible((WebDriver) this.webDriver,lblShopSpaceX, 30L);
         if(lblShopSpaceX.isDisplayed()){
             return true;
         }
@@ -59,10 +60,10 @@ public class SpaceProductPage {
    /* Search the product in search box and go to view all page*/
     public void searchProductinLandingPage(String productname){
 
-        Wait.untilElementIsVisible((AppiumDriver) this.webDriver,btnSearch, 30L);
+        Wait.untilElementIsVisible((WebDriver) this.webDriver,btnSearch, 30L);
         btnSearch.click();
         txtSearchBox.sendKeys(productname);
-        Wait.untilElementIsVisible((AppiumDriver) this.webDriver,lnkViewAll, 30L);
+        Wait.untilElementIsVisible((WebDriver) this.webDriver,lnkViewAll, 30L);
         lnkViewAll.click();
 
     }
@@ -78,7 +79,7 @@ public class SpaceProductPage {
         Thread.sleep(2000);
 
         //get total product element size
-        Wait.untilElementIsVisible((AppiumDriver) this.webDriver, lblProductName.get(0), 60L);
+        Wait.untilElementIsVisible((WebDriver) this.webDriver, lblProductName.get(0), 60L);
         intProductSize = lblProductName.size();
         System.out.println("Total products "+intProductSize);
 
@@ -105,7 +106,7 @@ public class SpaceProductPage {
         and wait on ajax call to finish but it doesnt help in this case */
         Thread.sleep(2000);
         //get total product size
-        Wait.untilElementIsVisible((AppiumDriver) this.webDriver, lblProductName.get(0), 60L);
+        Wait.untilElementIsVisible((WebDriver) this.webDriver, lblProductName.get(0), 60L);
         intProductSize = lblProductName.size();
 
         // iterate each product and find the matched one and click

@@ -4,5 +4,6 @@ package Enums;
 public enum Platform {
        ANDROID,
         IOS,
+    DESKTOP;
 
 }

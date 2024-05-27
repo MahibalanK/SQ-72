@@ -64,6 +64,8 @@ public class ConfigFileReader {
         String devicePlatform = properties.getProperty("Platform");
 
         switch (devicePlatform) {
+            case "DESKTOP":
+                return Platform.DESKTOP;
             case "ANDROID":
                 return Platform.ANDROID;
             case "IOS":

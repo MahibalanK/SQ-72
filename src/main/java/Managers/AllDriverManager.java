@@ -4,30 +4,28 @@ import Enums.DriverType;
 import Enums.EnvironmentType;
 import Enums.Platform;
 import io.appium.java_client.AppiumDriver;
-import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
-import io.appium.java_client.remote.AndroidMobileCapabilityType;
 import io.appium.java_client.remote.MobileCapabilityType;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.safari.SafariDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
+import static Enums.DriverType.CHROME;
+
 public class AllDriverManager {
 
    // Class To Initiate APPIUM Driver for Mobile TEST
-   private static AppiumDriver<WebElement> webDriver;
+   private static WebDriver webDriver;
+
+    private static ChromeDriver webChromeDriver;
+
     private static DriverType browserType;
     private static EnvironmentType environmentType;
     private static Platform devicePlatform;
@@ -53,9 +51,16 @@ public class AllDriverManager {
 
 
     /*Driver setup for LOCAL execution*/
-    private AppiumDriver<WebElement> createLocalDriver() throws MalformedURLException {
+    private WebDriver createLocalDriver() throws MalformedURLException {
         DesiredCapabilities cap = new DesiredCapabilities();
         switch (devicePlatform) {
+            case DESKTOP:
+                System.setProperty("webdriver.chrome.driver", "C://Driver//chromedriver.exe");
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("incognito");
+                options.addArguments("start-maximized");
+                webDriver = new ChromeDriver(options);
+                break;
             case ANDROID:
                 cap.setCapability(MobileCapabilityType.PLATFORM_VERSION, oSVersion);
                 cap.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName);
@@ -79,7 +84,7 @@ public class AllDriverManager {
                 cap.setCapability(MobileCapabilityType.PLATFORM_NAME, devicePlatform);
                 cap.setCapability(MobileCapabilityType.BROWSER_NAME, browserType);
                 cap.setCapability(MobileCapabilityType.APP,apkAppPath);
-                webDriver = new IOSDriver<WebElement>(new URL("http://0.0.0.0:4723/wd/hub"), cap);
+                webDriver = new IOSDriver<>(new URL("http://0.0.0.0:4723/wd/hub"), cap);
                 break;
 
         }
@@ -98,7 +103,7 @@ public class AllDriverManager {
     }
 
     /*Parent function to set driver depends on Environment Type -local or remote*/
-    private AppiumDriver<WebElement> createDriver() throws MalformedURLException {
+    private WebDriver createDriver() throws MalformedURLException {
         switch (environmentType) {
             case LOCAL:
                 webDriver = createLocalDriver();
@@ -110,14 +115,32 @@ public class AllDriverManager {
         return webDriver;
     }
 
+//    private WebDriver createWebDriver() throws MalformedURLException {
+//        switch (environmentType) {
+//            case LOCAL:
+//                webDriver = createLocalDriver();
+//                break;
+//            case REMOTE:
+//                webDriver = createRemoteDriver();
+//                break;
+//        }
+//        return webDriver;
+//    }
+
+
+
+
     /*Getter method */
-    public AppiumDriver<WebElement> getDriver() throws MalformedURLException {
+    public WebDriver getDriver() throws MalformedURLException {
         if (webDriver == null) webDriver = createDriver();
         return webDriver;
     }
 
+
+
     /*Closing driver instance */
     public void closeDriver() {
+       // webDriver.closeApp();
         webDriver.close();
         webDriver.quit();
     }
